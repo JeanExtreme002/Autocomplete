@@ -30,6 +30,23 @@ class SearchEngine():
             }
         )
 
+    def get_all_terms(self, page: int = 0) -> List[str]:
+        """
+        Get all terms from the search engine.
+        """
+        offset = page * 100
+        size = 100
+
+        response = self.client.search(
+            index=self.term_index_name,
+            body={
+                "query": {"match_all": {}}
+            },
+            from_=offset,
+            size=size
+        )
+        return [hits["_source"]["term"] for hits in response["hits"]["hits"]]
+
     def insert_term(self, term: str) -> None:
         """
         Insert a new term into the search engine.
