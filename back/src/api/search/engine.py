@@ -3,7 +3,9 @@ from typing import List
 
 
 class SearchEngine():
-    
+    """
+    Class for connecting and doing operations at the search engine. 
+    """
     term_index_name = "term_index"
 
     def __init__(self, host: str, port: int):

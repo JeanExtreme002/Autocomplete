@@ -19,6 +19,8 @@ Também estou utilizando o pacote `fastapi-cache` para cachear os resultados da 
 
 Para me comunicar com o motor de busca, estou utilizando a biblioteca `elasticsearch`, e para o GraphQL estou usando a biblioteca `strawberry`, para tornar mais fácil o desenvolvimento do back-end em Python.
 
+Implementei também uma rota para obter todos os documentos do motor de busca — para realizar testes e saber se o motor de busca e a inserção está funcionando certinho. Pensando em evitar abusos, caso o motor de busca venha a guardar um grande volume de termos, implementei uma paginação para barrar a sobrecarga do servidor e da rede.
+
 **Pendência:** Utilizar o Elasticsearch assíncronamente. https://elasticsearch-py.readthedocs.io/en/7.x/async.html
 
 ### Persistência dos Dados
