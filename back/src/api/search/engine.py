@@ -1,9 +1,10 @@
 from elasticsearch import Elasticsearch
+from typing import List
 
 
 class SearchEngine():
     
-    term_index_name = "term_index2"
+    term_index_name = "term_index"
 
     def __init__(self, host: str, port: int):
         self.client = Elasticsearch(f"http://{host}:{port}")
@@ -12,7 +13,7 @@ class SearchEngine():
         if not self.client.indices.exists(index=self.term_index_name):
             self.__create_term_index()
 
-    def __create_term_index(self):
+    def __create_term_index(self) -> None:
         """
         Create a term index into the ElasticSearch.
         """
@@ -29,7 +30,7 @@ class SearchEngine():
             }
         )
 
-    def insert_term(self, term: str):
+    def insert_term(self, term: str) -> None:
         """
         Insert a new term into the search engine.
         """
@@ -38,7 +39,7 @@ class SearchEngine():
             document={"term": term}
         )
 
-    def search(self, text: str, max_results: int = 20):
+    def search(self, text: str, max_results: int = 20) -> List[str]:
         """
         Search for a term.
         """

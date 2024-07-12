@@ -1,7 +1,7 @@
-from abc import ABC
 from typing import List
+import strawberry
 
-from src.search.engine import SearchEngine
+from src.api.search.engine import SearchEngine
 from src.config import ElasticSearchConfig
 
 search_engine = SearchEngine(
@@ -9,15 +9,16 @@ search_engine = SearchEngine(
     port=ElasticSearchConfig.PORT
 )
 
-class Controller(ABC):
+@strawberry.type
+class Query:
 
-    @staticmethod
-    def get_terms(text: str) -> List[str]:
+    @strawberry.field
+    def get_terms(self, text: str) -> List[str]:
         if len(text) < 4:
             return list()
 
         return search_engine.search(text, max_results=ElasticSearchConfig.MAX_RESULTS)
 
-    @staticmethod
-    def create_term(term: str) -> None:
-        search_engine.insert_term(term)
+    @strawberry.field
+    def create_term(self, term: str) -> None:
+        search_engine.insert_term(term.term)
