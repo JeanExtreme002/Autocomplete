@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "back"
+version = "0.1.0"
+description = ""
+authors = ["JeanExtreme002 <jeangamerextreme@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+strawberry-graphql = "^0.235.2"
+python-dotenv = "^1.0.1"
+fastapi = "^0.111.0"
+fastapi-cache2 = "^0.2.1"
+pydantic = "^2.8.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

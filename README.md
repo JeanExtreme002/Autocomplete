@@ -1,2 +1,2 @@
 # AutoComplete
-This is an autocomplete page using GraphQL
+This project implements an website with an autocomplete box using GraphQL
