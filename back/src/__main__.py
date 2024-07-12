@@ -1,11 +1,12 @@
 import uvicorn
-from .config import Config
+
+from src.config import Config
 
 
 def main() -> None:
 
     uvicorn.run(
-        "src.app:get_app",
+        "src.api.app:get_app",
         workers=Config.WORKERS_COUNT,
         host=Config.HOST,
         port=Config.PORT,

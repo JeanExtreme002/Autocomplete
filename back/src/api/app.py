@@ -6,7 +6,7 @@ from fastapi.responses import JSONResponse
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 
-from src.views import router
+from src.api.views import router
 
 APP_ROOT = Path(__file__).parent
 
