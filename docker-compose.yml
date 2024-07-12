@@ -30,23 +30,6 @@ services:
       timeout: 5s
       retries: 5
 
-  graphql:
-    image: ghcr.io/graphile/postgraphile
-    ports:
-      - "5001:5001"
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
-      GRAPHILE_SCHEMA: myschema
-    depends_on:
-      - postgres
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:5001/graphiql || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   backend:
     image: python:3.9
     working_dir: /app
@@ -57,7 +40,6 @@ services:
     command: sh -c "pip install poetry && poetry install && poetry run python -m src"
     depends_on:
       - elasticsearch
-      - graphql
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:5000 || exit 1"]
       interval: 10s

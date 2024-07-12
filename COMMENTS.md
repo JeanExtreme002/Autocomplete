@@ -5,13 +5,15 @@ Comentários a respeito do desenvolvimento projeto.
 
 ### Busca de Texto
 Buscar texto em um grande volume de dados pode ser bastante custoso se utilizado algoritmos com alta complexidade. Para tal, penso
-em utilizar o ElasticSearch que é um motor de busca open-source.
+em utilizar o ElasticSearch que é um motor de busca bastante eficiente e open-source.
 
 ### API
 Para o back-end, eu penso em utilizar FastAPI. Nenhum motivo especial. Apenas por ser uma ótima ferramenta para desenvolvimento de
 servidores API, por eu ter uma certa familiaridade com ele e ser mais simples e comum para o propósito.
 
-Para utilizar o GraphQL, farei uso da biblioteca Strawberry.
+Implementei uma "mini" arquitetura MVC para a API e utilizei o pacote `fastapi-cache` para cachear os seus resultados.
+
+Para me comunicar com o motor de busca, estou utilizando a biblioteca `elasticsearch`, e para o GraphQL estou usando a biblioteca `strawberry`, para tornar mais fácil o desenvolvimento do back-end em Python.
 
 ### Persistência dos Dados
 Como a única informação que eu pretendo persistir e recuperar é um único texto por linha, não faz sentido ao meu ver, para este projeto,
