@@ -21,7 +21,7 @@ services:
       - ./back:/app
     ports:
       - "5000:5000"
-    command: sh -c "pip install poetry && poetry install && poetry run python -m src"
+    command: sh -c "pip install poetry && poetry install && poetry run python -m src.seeder && poetry run python -m src"
     depends_on:
       - elasticsearch
     healthcheck:
