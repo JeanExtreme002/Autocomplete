@@ -4,6 +4,15 @@ import os
 dotenv.load_dotenv()
 
 
+class ElasticSearchConfig:
+    """
+    ElasticSearch configuration.
+    """
+    HOST = os.getenv("ELASTICSEARCH_HOST", "localhost")
+    PORT = int(os.getenv("ELASTICSEARCH_PORT", "9200"))
+    MAX_RESULTS = int(os.getenv("ELASTICSEARCH_MAX_RESULTS", "20"))
+
+
 class Config:
     """
     Base configuration.
