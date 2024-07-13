@@ -23,7 +23,7 @@ class SearchEngine():
 
         while (time.time() - start_time) < timeout:
             try:
-                response = requests.get(f"http://elasticsearch:{port}/_cluster/health?wait_for_status=yellow&timeout=1s")
+                response = requests.get(f"http://{host}:{port}/_cluster/health?wait_for_status=yellow&timeout=1s")
 
                 if response.status_code == 200:
                     break

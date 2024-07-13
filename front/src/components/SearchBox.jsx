@@ -3,42 +3,38 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const suggestions = [];
-let lastInputValueLength = 0;
+async function getSuggestions(text) {
+  const baseURL = process.env.REACT_APP_API_URL;
 
-async function getSuggestions() {
+  const body = {
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    }
+  };
 
+  const response = await fetch(baseURL + `?query={searchTerms(text:"${text}")}`, body);
+
+  if (response.status === 200) {
+    return (await response.json())["data"]["searchTerms"];
+  }
 }
-console.log(process.env.REACT_APP_API_URL)
 
 export default function SearchBox() {
-  const [value,] = React.useState(null);
+  const [options, setOptions] = React.useState([]);
+  
+  const getData = (inputValue) => {
+    getSuggestions(inputValue).then((results) => setOptions(results));
+  };
+  
+  const onInputChange = (event, value, reason) => {
+    value ? getData(value) : setOptions([]);
+  };
 
   return (
-    <Autocomplete id="autocomplete" sx={{ width: 550 }} value={value}
-      options={[]}
-
-      filterOptions={(options, params) => {
-        const filtered = [];
-
-        const { inputValue } = params;
-
-        if (inputValue.length < 4) {
-          return filtered;
-        }
-
-        if (inputValue.length < lastInputValueLength) {
-          suggestions.pop();
-          return suggestions[sessionStorage.suggestions.length - 1];
-        }
-        else {
-          const newSuggestions = [inputValue + " alguma coisa alem", inputValue + " alguma coisa"];
-          suggestions.push(newSuggestions);
-
-          return newSuggestions;
-        }
-      }}
-
+    <Autocomplete id="autocomplete" sx={{ width: 550 }} 
+    options={options} 
+    onInputChange={onInputChange}
       renderInput={(params) => (
         <TextField {...params} />
       )}
