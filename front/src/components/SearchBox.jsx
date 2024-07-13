@@ -32,12 +32,22 @@ export default function SearchBox() {
   };
 
   return (
-    <Autocomplete id="autocomplete" sx={{ width: 550 }} 
-    options={options} 
-    onInputChange={onInputChange}
+    <Autocomplete id="autocomplete" sx={{ width: "60vw" }} 
+      options={options} 
+      freeSolo
+      autoHighlight
+      onInputChange={onInputChange}
       renderInput={(params) => (
         <TextField {...params} />
       )}
+      ListboxProps={{
+        style: {
+          maxHeight: "min(40vh, 300px)",
+          border: "1px solid",
+          whiteSpace: "nowrap",
+          fontSize: "80%"
+        }
+      }}
     />
   );
 }
