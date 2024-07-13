@@ -11,12 +11,11 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  padding: 20px;
 }
 
 .container {
   display: flex;
-  height: 25vh;
+  height: calc(6vh + 2vw + max(1vw, 12px) + 70px);
   margin-bottom: 20vh;
 }
 
@@ -33,12 +32,12 @@
 }
 
 .container .content h2 {
-  font-size: calc(2vh + 2vw);
+  font-size: calc(0.5vh + 2.5vw);
   margin: 0;
 }
 
 .container .content small {
-  font-size: max(1vw, 12px);
+  font-size: max(1vw, 10px);
 }
 
 .container .content #search-box {
