@@ -14,7 +14,7 @@ class SearchEngine():
     """
     term_index_name = "term_index"
 
-    def __init__(self, host: str, port: int, timeout: int = 60):
+    def __init__(self, host: str, port: int, timeout: int = 60 * 5):
         self.client = Elasticsearch(f"http://{host}:{port}")
         self.client._verified_elasticsearch = True
 
