@@ -6,6 +6,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 const suggestions = [];
 let lastInputValueLength = 0;
 
+async function getSuggestions() {
+
+}
+console.log(process.env.REACT_APP_API_URL)
 
 export default function SearchBox() {
   const [value,] = React.useState(null);
