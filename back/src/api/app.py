@@ -10,6 +10,7 @@ from src.api.views import router
 
 APP_ROOT = Path(__file__).parent
 
+
 def get_app() -> FastAPI:
     """
     Get FastAPI application.

@@ -9,6 +9,6 @@ router = APIRouter()
 router.include_router(graphql_app, prefix="/graphql")
 
 @router.get("/", status_code=status.HTTP_200_OK)
-def index():
+async def index():
     return {"status": "alive"}
 

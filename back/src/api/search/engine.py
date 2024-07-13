@@ -1,5 +1,11 @@
 from elasticsearch import Elasticsearch
 from typing import List
+import time
+import requests
+
+from src.config import ElasticSearchConfig
+
+__all__ = ["search_engine"]
 
 
 class SearchEngine():
@@ -8,10 +14,25 @@ class SearchEngine():
     """
     term_index_name = "term_index"
 
-    def __init__(self, host: str, port: int):
+    def __init__(self, host: str, port: int, timeout: int = 60):
         self.client = Elasticsearch(f"http://{host}:{port}")
         self.client._verified_elasticsearch = True
 
+        # Wait for Elasticsearch to become available.
+        start_time = time.time()
+
+        while (time.time() - start_time) < timeout:
+            try:
+                response = requests.get(f"http://elasticsearch:{port}/_cluster/health?wait_for_status=yellow&timeout=1s")
+
+                if response.status_code == 200:
+                    break
+            except requests.exceptions.ConnectionError:
+                pass
+        else:
+            raise RuntimeError("Elasticsearch is not available within the timeout period.")
+
+        # Create index if it does not exist.
         if not self.client.indices.exists(index=self.term_index_name):
             self.__create_term_index()
 
@@ -79,3 +100,9 @@ class SearchEngine():
         suggestions = response["suggest"]["term_suggest"][0]["options"]
         
         return [suggestion["text"] for suggestion in suggestions]
+
+
+search_engine = SearchEngine(
+    host=ElasticSearchConfig.HOST, 
+    port=ElasticSearchConfig.PORT
+)
