@@ -1,0 +1,17 @@
+.Autocomplete-listbox {
+  max-height: calc(min(4vmax, 300px) + (1.6vmin * 20));
+  white-space: nowrap;
+  list-style-type: none;
+  padding: 0;
+}
+
+.Autocomplete-option {
+  height: calc(calc(min(4vmax, 300px)) / (10 - 1));
+  font-size: 0.7rem;
+  padding: 1.6vmin;
+}
+
+.Autocomplete-option:hover {
+  cursor: pointer;
+  background: rgb(216, 248, 249);
+}
