@@ -42,7 +42,7 @@ export default function SearchBox() {
       getOptionLabel={(option) => option.term}
 
       renderOption={(props, option) => {
-        const term = option.term.replace(option.match, "<b>" + option.match + "</b>").replace(" ", "&nbsp;");
+        const term = option.term.replace(option.match, "<b>" + option.match + "</b>").replaceAll(" ", "&nbsp;");
         return (<li {...props} dangerouslySetInnerHTML={{ __html: term }}></li>)
       }}
 
