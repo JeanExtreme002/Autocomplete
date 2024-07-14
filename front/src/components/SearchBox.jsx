@@ -43,6 +43,7 @@ export default function SearchBox() {
       sx={{ width: "60vw", backgroundColor: "white" }} 
 
       autoHighlight 
+      freeSolo
       noOptionsText=""
       onInputChange={onInputChange}
 

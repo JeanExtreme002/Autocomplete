@@ -1,5 +1,7 @@
+import { Config } from '../config';
+
 export async function getSuggestions(text, signal = null) {
-    const baseURL = process.env.REACT_APP_API_URL;
+    const baseURL = Config.API_URL;
   
     const body = {
       signal,
