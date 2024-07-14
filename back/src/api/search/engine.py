@@ -13,7 +13,7 @@ class SearchEngine():
     """
     Class for connecting and doing operations at the search engine. 
     """
-    term_index_name = "term_index"
+    term_index_name = "terms_index"
 
     def __init__(self, host: str, port: int, timeout: int = 60 * 5):
         self.client = Elasticsearch(f"http://{host}:{port}")
@@ -47,7 +47,8 @@ class SearchEngine():
                 "mappings": {
                     "properties": {
                         "term": {
-                            "type": "completion"
+                            "type": "completion",
+                            "max_input_length": 200
                         }
                     }
                 }

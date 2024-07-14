@@ -34,9 +34,11 @@ export default function SearchBox() {
   };
 
   return (
-    <Autocomplete id="autocomplete" options={options} autoHighlight
-      sx={{ width: "60vw", backgroundColor: "white" }}  
+    <Autocomplete id="autocomplete" options={options}
+      sx={{ width: "60vw", backgroundColor: "white" }} 
 
+      autoHighlight 
+      noOptionsText=""
       onInputChange={onInputChange}
 
       getOptionLabel={(option) => option.term}
@@ -47,15 +49,15 @@ export default function SearchBox() {
       }}
 
       renderInput={(params) => (
-        <TextField {...params} InputProps={{...params.InputProps, style: {height: "7vh", fontSize: "min(6vh, 18px)"}}}/>
+        <TextField {...params} InputProps={{...params.InputProps, style: {height: "7vh", fontSize: "1.4vmax"}}}/>
       )}
 
       ListboxProps={{
         style: {
-          maxHeight: "min(40vh, 300px)",
+          maxHeight: "min(20vmax, 300px)",
           border: "1px solid",
           whiteSpace: "nowrap",
-          fontSize: "80%"
+          fontSize: "min(1vmax, 12px)"
         }
       }}
     />
