@@ -1,4 +1,5 @@
 from elasticsearch import Elasticsearch
+from elasticsearch.helpers import bulk
 from typing import List
 import time
 import requests
@@ -78,6 +79,15 @@ class SearchEngine():
             index=self.term_index_name,
             document={"term": term}
         )
+
+    def insert_terms(self, *terms: str) -> None:
+        """
+        Insert multiple terms into the search engine.
+        """
+        index = self.term_index_name
+
+        documents = [{"_index": index, "_source": {"term": term}} for term in terms]
+        bulk(self.client, documents, index=index, raise_on_error=True)
 
     def search(self, text: str, max_results: int = 20) -> List[str]:
         """

@@ -5,7 +5,7 @@ import logging
 from src.api.search.engine import search_engine
 
 
-with open(Path(__file__).parent / "terms.json") as file:
+with open(Path(__file__).parent / "terms.json", encoding="UTF-8") as file:
     data = set(json.load(file))
 
 def seed() -> None:

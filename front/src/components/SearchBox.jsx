@@ -14,7 +14,7 @@ async function getSuggestions(text) {
   };
 
   const response = await fetch(baseURL + `?query={searchTerms(text:"${text}")}`, body);
-
+  
   if (response.status === 200) {
     return (await response.json())["data"]["searchTerms"];
   }
@@ -38,7 +38,7 @@ export default function SearchBox() {
       autoHighlight
       onInputChange={onInputChange}
       renderInput={(params) => (
-        <TextField {...params} InputProps={{style: {height: "7vh", fontSize: "min(6vh, 18px)"}}}/>
+        <TextField {...params} InputProps={{...params.InputProps, style: {height: "7vh", fontSize: "min(6vh, 18px)"}}}/>
       )}
       ListboxProps={{
         style: {
