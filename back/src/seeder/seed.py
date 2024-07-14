@@ -9,6 +9,7 @@ search_engine = get_search_engine()
 with open(Path(__file__).parent / "terms.json", encoding="UTF-8") as file:
     data = set(json.load(file))
 
+
 def seed() -> None:
     logging.basicConfig(level=logging.INFO)
     logging.info("Seeding the search engine...")

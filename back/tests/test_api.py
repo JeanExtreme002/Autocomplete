@@ -41,7 +41,7 @@ class FastAPITest(TestCase):
         }
 
         for term in self.terms:
-            mutation = f"mutation {{createTerm(term: \"{term}\")}}"
+            mutation = f'mutation {{createTerm(term: "{term}")}}'
 
             response = client.post("graphql/", json={"query": mutation}, headers=headers)
             self.assertEqual(response.status_code, 200)
@@ -59,7 +59,7 @@ class FastAPITest(TestCase):
         }
 
         response = client.post("graphql/", json={"query": "query {allTerms}"}, headers=headers)
-        
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["data"]["allTerms"], self.terms)
 
@@ -69,11 +69,26 @@ class FastAPITest(TestCase):
         """
         test_cases = [
             {"searchInput": "direito", "expected": self.terms},
-            {"searchInput": "direito do con", "expected": ["direito do consumidor",]},
-            {"searchInput": "direito do tra", "expected": ["direito do trabalhador",]},
-            {"searchInput": "direito da", "expected": ["direito das mulheres",]},
+            {
+                "searchInput": "direito do con",
+                "expected": [
+                    "direito do consumidor",
+                ],
+            },
+            {
+                "searchInput": "direito do tra",
+                "expected": [
+                    "direito do trabalhador",
+                ],
+            },
+            {
+                "searchInput": "direito da",
+                "expected": [
+                    "direito das mulheres",
+                ],
+            },
         ]
-        
+
         headers = {
             "Content-Type": "application/json",
         }
@@ -81,8 +96,8 @@ class FastAPITest(TestCase):
         for test_case in test_cases:
             text = test_case["searchInput"]
 
-            query = f"query {{searchTerms(text: \"{text}\")}}"
+            query = f'query {{searchTerms(text: "{text}")}}'
             response = client.post("graphql/", json={"query": query}, headers=headers)
-            
+
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.json()["data"]["searchTerms"], test_case["expected"])

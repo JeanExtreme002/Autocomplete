@@ -14,16 +14,12 @@ def clear_search_engine() -> None:
     """
     index_url = f"{search_engine.base_url}/{search_engine.term_index_name}"
 
-    query = {
-        "query": {
-            "match_all": {}
-        }
-    }
+    query = {"query": {"match_all": {}}}
     response = requests.post(f"{index_url}/_delete_by_query", json=query)
 
     if response.status_code != 200:
         raise RuntimeError("Failed to clear the search engine.")
-    
+
     time.sleep(2)
 
 
@@ -69,6 +65,3 @@ class SearchEngineTest(TestCase):
 
     def tearDown(self) -> None:
         clear_search_engine()
-
-
-        

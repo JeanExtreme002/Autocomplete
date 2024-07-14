@@ -9,10 +9,11 @@ from src.config import Config
 __all__ = ["SearchEngine", "get_search_engine"]
 
 
-class SearchEngine():
+class SearchEngine:
     """
-    Class for connecting and doing operations at the search engine. 
+    Class for connecting and doing operations at the search engine.
     """
+
     term_index_name = "terms_index"
 
     def __init__(self, host: str, port: int, timeout: int = 60 * 5):
@@ -26,7 +27,9 @@ class SearchEngine():
 
         while (time.time() - start_time) < timeout:
             try:
-                response = requests.get(self.base_url + "/_cluster/health?wait_for_status=yellow&timeout=1s")
+                response = requests.get(
+                    self.base_url + "/_cluster/health?wait_for_status=yellow&timeout=1s"
+                )
 
                 if response.status_code == 200:
                     break
@@ -44,17 +47,18 @@ class SearchEngine():
         Create a term index into the ElasticSearch.
         """
         self.client.indices.create(
-            index=self.term_index_name, timeout="60s",
+            index=self.term_index_name,
+            timeout="60s",
             body={
                 "mappings": {
                     "properties": {
                         "term": {
-                            "type": "completion",
+                            "type": "completion", 
                             "max_input_length": 200
                         }
                     }
                 }
-            }
+            },
         )
 
     def get_all_terms(self, page: int = 0) -> List[str]:
@@ -65,11 +69,9 @@ class SearchEngine():
         size = 100
 
         response = self.client.search(
-            index=self.term_index_name,
-            body={
-                "query": {"match_all": {}}
-            },
-            from_=offset,
+            index=self.term_index_name, 
+            body={"query": {"match_all": {}}}, 
+            from_=offset, 
             size=size
         )
         return [hits["_source"]["term"] for hits in response["hits"]["hits"]]
@@ -78,10 +80,7 @@ class SearchEngine():
         """
         Insert a new term into the search engine.
         """
-        self.client.index(
-            index=self.term_index_name,
-            document={"term": term}
-        )
+        self.client.index(index=self.term_index_name, document={"term": term})
 
     def insert_terms(self, *terms: str) -> None:
         """
@@ -97,21 +96,18 @@ class SearchEngine():
         Search for a term.
         """
         response = self.client.search(
-            index=self.term_index_name, 
+            index=self.term_index_name,
             body={
                 "suggest": {
-                    "term_suggest" : {
-                        "prefix" : text,
-                        "completion" : {
-                            "field" : "term",
-                            "size": max_results
-                        }
+                    "term_suggest": {
+                        "prefix": text,
+                        "completion": {"field": "term", "size": max_results},
                     }
                 }
-            }
+            },
         )
         suggestions = response["suggest"]["term_suggest"][0]["options"]
-        
+
         return [suggestion["text"] for suggestion in suggestions]
 
 

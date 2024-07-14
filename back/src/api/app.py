@@ -32,5 +32,5 @@ def get_app() -> FastAPI:
     _app.include_router(router=router)
 
     FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache")
-    
+
     return _app
