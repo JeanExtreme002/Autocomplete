@@ -43,7 +43,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install poetry
-          poetry install
+          poetry install --with dev
         working-directory: ./back
 
       - name: Create .env file
@@ -52,4 +52,8 @@ jobs:
 
       - name: Run Unit Tests
         run: poetry run python -m unittest discover -s tests --verbose
+        working-directory: ./back
+
+      - name: Run Linter
+        run: poetry run flake8 .
         working-directory: ./back
