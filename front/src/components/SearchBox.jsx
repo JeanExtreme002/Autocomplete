@@ -16,7 +16,9 @@ async function getSuggestions(text) {
   const response = await fetch(baseURL + `?query={searchTerms(text:"${text}")}`, body);
   
   if (response.status === 200) {
-    return (await response.json())["data"]["searchTerms"];
+    return (await response.json())["data"]["searchTerms"].map((term) => {
+      return {term: term, match: term.slice(0, text.length)};
+    });
   }
 }
 
@@ -32,14 +34,22 @@ export default function SearchBox() {
   };
 
   return (
-    <Autocomplete id="autocomplete" sx={{ width: "60vw", backgroundColor: "white" }} 
-      options={options} 
-      freeSolo
-      autoHighlight
+    <Autocomplete id="autocomplete" options={options} autoHighlight
+      sx={{ width: "60vw", backgroundColor: "white" }}  
+
       onInputChange={onInputChange}
+
+      getOptionLabel={(option) => option.term}
+
+      renderOption={(props, option) => {
+        const term = option.term.replace(option.match, "<b>" + option.match + "</b>").replace(" ", "&nbsp;");
+        return (<li {...props} dangerouslySetInnerHTML={{ __html: term }}></li>)
+      }}
+
       renderInput={(params) => (
         <TextField {...params} InputProps={{...params.InputProps, style: {height: "7vh", fontSize: "min(6vh, 18px)"}}}/>
       )}
+
       ListboxProps={{
         style: {
           maxHeight: "min(40vh, 300px)",
