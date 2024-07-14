@@ -53,7 +53,7 @@ class SearchEngine:
                 "mappings": {
                     "properties": {
                         "term": {
-                            "type": "completion", 
+                            "type": "completion",
                             "max_input_length": 200
                         }
                     }
@@ -69,10 +69,7 @@ class SearchEngine:
         size = 100
 
         response = self.client.search(
-            index=self.term_index_name, 
-            body={"query": {"match_all": {}}}, 
-            from_=offset, 
-            size=size
+            index=self.term_index_name, body={"query": {"match_all": {}}}, from_=offset, size=size
         )
         return [hits["_source"]["term"] for hits in response["hits"]["hits"]]
 
@@ -116,7 +113,6 @@ def get_search_engine() -> SearchEngine:
     Return an instance of the SearchEngine.
     """
     search_engine = SearchEngine(
-        host=Config.ELASTIC_SEARCH_CONFIG.HOST, 
-        port=Config.ELASTIC_SEARCH_CONFIG.PORT
+        host=Config.ELASTIC_SEARCH_CONFIG.HOST, port=Config.ELASTIC_SEARCH_CONFIG.PORT
     )
     return search_engine
