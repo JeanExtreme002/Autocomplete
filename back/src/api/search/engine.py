@@ -4,9 +4,9 @@ from typing import List
 import time
 import requests
 
-from src.config import ElasticSearchConfig
+from src.config import Config
 
-__all__ = ["search_engine"]
+__all__ = ["SearchEngine", "get_search_engine"]
 
 
 class SearchEngine():
@@ -16,7 +16,9 @@ class SearchEngine():
     term_index_name = "terms_index"
 
     def __init__(self, host: str, port: int, timeout: int = 60 * 5):
-        self.client = Elasticsearch(f"http://{host}:{port}")
+        self.base_url = f"http://{host}:{port}"
+
+        self.client = Elasticsearch(self.base_url)
         self.client._verified_elasticsearch = True
 
         # Wait for Elasticsearch to become available.
@@ -24,7 +26,7 @@ class SearchEngine():
 
         while (time.time() - start_time) < timeout:
             try:
-                response = requests.get(f"http://{host}:{port}/_cluster/health?wait_for_status=yellow&timeout=1s")
+                response = requests.get(self.base_url + "/_cluster/health?wait_for_status=yellow&timeout=1s")
 
                 if response.status_code == 200:
                     break
@@ -42,7 +44,7 @@ class SearchEngine():
         Create a term index into the ElasticSearch.
         """
         self.client.indices.create(
-            index=self.term_index_name, 
+            index=self.term_index_name, timeout="60s",
             body={
                 "mappings": {
                     "properties": {
@@ -113,7 +115,12 @@ class SearchEngine():
         return [suggestion["text"] for suggestion in suggestions]
 
 
-search_engine = SearchEngine(
-    host=ElasticSearchConfig.HOST, 
-    port=ElasticSearchConfig.PORT
-)
+def get_search_engine() -> SearchEngine:
+    """
+    Return an instance of the SearchEngine.
+    """
+    search_engine = SearchEngine(
+        host=Config.ELASTIC_SEARCH_CONFIG.HOST, 
+        port=Config.ELASTIC_SEARCH_CONFIG.PORT
+    )
+    return search_engine

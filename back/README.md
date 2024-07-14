@@ -1,15 +1,28 @@
 # Back-end
-This is the back-end of the auto complete.
+This is the back-end server of the auto complete project.
 
-## Available Scripts
+## Getting Started
 
-In the project directory, you can run:
+First, make sure Elasticsearch is alive and `.env` file is configured. 
 
-### `poetry run python ./src/app.py`
+Install the dependencies for the project:
+```
+$ pip install poetry
+$ poetry install
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:5000](http://localhost:5000) to view it in your browser.
+Now, you can run the server with:
+```
+$ poetry run python -m src
+```
 
-### `poetry install`
+Populate the application by running the following command:
+```
+$ poetry run python -m src.seeder
+```
 
-Installs the defined dependencies for the project.
+## Running tests
+The back-end has some tests to check if everything is working properly. To run the tests, execute the command below:
+```
+$ poetry run python -m unittest discover -s tests --verbose
+```

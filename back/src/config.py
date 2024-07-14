@@ -17,10 +17,6 @@ class Config:
     """
     Base configuration.
     """
-
-    ENVIRONMENT = os.getenv("ENVIRONMENT", "DEV")
-    DEBUG = ENVIRONMENT == "DEV"
-
     HOST = os.getenv("APPLICATION_HOST", "0.0.0.0")
     PORT = int(os.getenv("APPLICATION_PORT", "5000"))
     WORKERS_COUNT = int(os.getenv("WORKERS_COUNT", "1"))
@@ -28,3 +24,4 @@ class Config:
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").lower()
 
     APPLICATION_ROOT = os.getenv("APPLICATION_ROOT", "")
+    ELASTIC_SEARCH_CONFIG: ElasticSearchConfig = ElasticSearchConfig()
