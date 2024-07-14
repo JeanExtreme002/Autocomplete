@@ -1,5 +1,5 @@
 # AutoComplete
-This project implements an website with an autocomplete box using GraphQL
+This project implements an website with an autocomplete box using GraphQL and Elasticsearch.
 
 ## Getting Started
 The entire project has been built to run entirely on Docker. Execute the command below to run the application:
