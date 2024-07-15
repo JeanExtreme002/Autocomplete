@@ -35,6 +35,17 @@ Separei os elementos visuais no pacote `components` e as funcionalidades no paco
 
 Devido à minha falta de experiência em desenvolvimento front-end, a minha maior dificuldade no projeto foi a tarefa de manter apenas 10 sugestões visíveis na caixa de sugestões, e ainda fazendo isso de forma responsiva. Foi onde eu mais demorei.
 
+Além disso, inicialmente, eu pensei em implementar no front-end um sistema de pilha de sugestões, como uma cache, para sempre que o usuário deletasse um caractere, não precisasse enviar uma nova requisição ao servidor. Como o limite é apenas 20 termos por requisição,
+mesmo que todos os termos fossem bem grandes (500 caracteres cada termo), o custo de espaço para o usuário seria menos que 10MB — sendo bem pessimista nisso.
+
+Entretando abandonei essa ideia, por dois motivos:
+
+- Se o usuário deletar vários caracteres do input rapidamente e depois digitar novamente, ou mesmo deletar um caractere que não é sufixo, eu não tenho garantia de que haverá uma sincronia entre a remoção dos termos da pilha e a inserção de novos termos. E isso se agravou ainda mais depois que passei a usar `signal` na requisição. Definitivamente ficaria dessincronizado e acabaria em bugs.
+
+- Caso haja novos termos no servidor, o usuário não os obteria, ficando limitado apenas ao seu cache.
+
+Também pensei em, pelo menos, impedir o cliente de enviar requisições com inputs de tamanho menores que 4. Mas penso que, por se tratar de uma regra de negócio, isso deveria ficar apenas no back-end mesmo.
+
 ### Testes
 Implementei no back-end testes — utilizando unittest — para verificar o funcionamento do Elasticsearch e das rotas do GraphQL.
 
