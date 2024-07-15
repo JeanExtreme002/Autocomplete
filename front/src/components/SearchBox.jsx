@@ -57,7 +57,11 @@ export default function SearchBox() {
                 return <li className='Autocomplete-option' {...props} key={option.term} dangerouslySetInnerHTML={{__html: term}}></li>;
             }}
             renderInput={(params) => (
-                <TextField {...params} InputProps={{...params.InputProps, style: {height: '7vh', fontSize: '1.4vmax'}}} />
+                <TextField
+                    {...params}
+                    placeholder='Pesquise aqui o seu termo'
+                    InputProps={{...params.InputProps, style: {height: '7vh', fontSize: '1.4vmax'}}}
+                />
             )}
             ListboxComponent={ListboxComponent}
         />

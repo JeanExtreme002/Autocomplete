@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import SearchBox from './SearchBox';
+import SearchButton from './SearchButton';
 
 import logo from '../resources/logo.png';
 import './App.css';
@@ -17,6 +18,7 @@ function App() {
                         <div id='search-box'>
                             <SearchBox />
                         </div>
+                        <SearchButton />
                     </div>
                 </div>
             </header>
