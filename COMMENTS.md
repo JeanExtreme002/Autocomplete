@@ -22,6 +22,8 @@ Além disso, durante o desenvolvimento, eu criava uma instância do Elasticsearc
 
 Também estou utilizando o pacote [`fastapi-cache2`](https://pypi.org/project/fastapi-cache2/) para cachear os resultados da API, a fim de otimizar as requisições.
 
+Para gerenciar as dependências do projeto, no lado back-end, estou utilizando o [`Poetry`](https://python-poetry.org/), que facilita a instalação dos pacotes e deixa tudo bem organizado no `pyproject.toml`.
+
 Implementei também uma rota para obter todos os documentos do motor de busca — para realizar testes e saber se o motor de busca e a inserção está funcionando certinho. Pensando em evitar abusos, caso o motor de busca venha a guardar um grande volume de termos, implementei uma paginação para barrar a sobrecarga do servidor e da rede.
 
 Desde o início do projeto, eu já estava em mente de utilizar o Elasticsearch de forma assíncrona, para não atrasar as requests de outros usuários. Então pesquisei sobre e descobri que havia o `AsyncElasticsearch` que, segundo a documentação, era a mesma coisa que usar a classe `Elasticsearch`, porém usando o `await` nos métodos. Então, para agilizar logo as tarefas, tendo em vista que é um projeto pequeno, desenvolvi tudo com a classe `Elasticsearch` — com as rotas do GraphQL assíncronas — para depois passar as suas chamadas para *async*. Neste momento, pensei ser uma boa estratégia, porque o Elasticsearch já estava me dando alguns problemas de configuração, e começar a fazer as coisas com o seu *client* assíncrono me parecia ser um impecilho em potencial para dar continuidade com as outras tarefas. No final das contas, consegui passar o seu *client* de síncrono para assíncrono sem qualquer dificuldade, como eu planejava. Mas agora que eu estou fazendo uma reflexão de tudo o que eu fiz, considero que essa decisão talvez tenha sido errada, uma vez que, tratando o assincronismo do Elasticsearch como um requisito, talvez fosse melhor tratar os seus problemas durante o desenvolvimento do que depois de ter tudo pronto. Todavia, se fosse em um de maior escala, certamente eu escolheria por desenvolver tudo desde o início com o seu *client* assíncrono.
@@ -88,3 +90,5 @@ Irei dedicar essa seção para falar de coisas que eu faria, ou gostaria de impl
 - Implementar testes automatizados de UI;
 
 - Caso esse projeto fosse deployado para uma cloud, eu implementaria um CD no workflow do GitHub Actions;
+
+- Para o back-end, eu pensaria em colocar um Makefile, ou algo do tipo para "scriptizar", para reduzir a linha de comando do teste e da formatação.
