@@ -43,7 +43,7 @@ Pesquisei por um mock do Elasticsearch, porém o melhor pacote que eu encontrei 
 Para o teste das rotas do GraphQL, eu entendo que é uma boa prática um teste não depender do outro. Sendo assim, criei um mock da minha classe `SearchEngine` — está no módulo `mocked.py` — para ser utilizado nas rotas do servidor. Realizei essa alteração no `app.dependency_overrides`. Também estou utilizando o `TestClient` do FastAPI para testar as rotas sem precisar inicializar o servidor de fato.
 
 ### Formatação de Código
-Estou utilizando o [`Flake8`](https://flake8.pycqa.org/) para o verificar a estilização do back-end e o [`Black`](https://pypi.org/project/black/) para formatar. O `black` em alguns poucos momentos é meio chatinho e acaba formatando alguns trechos de uma maneira que não me agrada muito — como colocar toda estrutura de um dicionário em uma única linha, quando eu queria a estrutura indentada para melhor visibilidade — mas no geral é um ótimo formatador de código.
+Estou utilizando o [`Flake8`](https://flake8.pycqa.org/) para verificar a estilização do back-end e o [`Black`](https://pypi.org/project/black/) para formatar. O `black` em alguns poucos momentos é meio chatinho e acaba formatando alguns trechos de uma maneira que não me agrada muito — como colocar toda estrutura de um dicionário em uma única linha, quando eu queria a estrutura indentada para melhor visibilidade — mas no geral é um ótimo formatador de código.
 
 Para o front-end, estou utilizando o [`ESLint`](https://eslint.org/) e o [`Prettier`](https://prettier.io/). Coloquei as suas chamadas no `package.json` do projeto.
 
