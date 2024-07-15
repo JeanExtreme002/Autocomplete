@@ -66,11 +66,11 @@ Tanto o diretório do back-end quando o diretório do front-end possuem uma docu
 ### Ideias para o Projeto
 Irei dedicar essa seção para falar de coisas que eu faria, ou gostaria de implementar, se eu tivesse mais tempo ou caso fosse um requisito do projeto;
 
-- Para a rota de inserção de um novo termo, eu faria um sistema de autenticação, para que essa rota fosse utilizar apenas pelos administradores;
+- Para a rota de inserção de um novo termo, eu faria um sistema de autenticação, para que essa rota fosse utilizada apenas pelos administradores;
 
 - Assumindo que esse projeto fosse utilizado em larga escala, eu configuraria o Elasticsearch para rodar em vários clusters e com réplicas, a fim de manter o servidor funcionando normalmente em caso de um cluster cair por sobrecarga, erro ou desastres naturais.
 
-- Ainda assumindo que esse projeto fosse utilizado em larga escala, acho que seria legal utilizar um *middleware* Anti-DDoS para evitar ataques de negação de serviço. (Mas isso tem que ser feito com muito cuidado, já que o objetivo é a recuperação dos termos na maior velocidade possível);
+- Ainda assumindo que esse projeto fosse utilizado em larga escala, acho que seria legal utilizar um *middleware* Anti-DDoS para evitar ataques de negação de serviço. Mas isso tem que ser feito com muito cuidado, já que o objetivo é a recuperação dos termos na maior velocidade possível;
 
 - Implementar testes automatizados de UI;
 
