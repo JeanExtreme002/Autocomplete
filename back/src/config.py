@@ -20,8 +20,8 @@ class Config:
     Base configuration.
     """
 
-    HOST = os.getenv("APPLICATION_HOST", "0.0.0.0")
-    PORT = int(os.getenv("APPLICATION_PORT", "5000"))
+    HOST = os.getenv("BACKEND_HOST", "0.0.0.0")
+    PORT = int(os.getenv("BACKEND_PORT", "5000"))
     WORKERS_COUNT = int(os.getenv("WORKERS_COUNT", "1"))
     RELOAD = os.getenv("RELOAD", "true").lower() == "true"
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO").lower()

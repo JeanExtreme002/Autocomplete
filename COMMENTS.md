@@ -75,5 +75,3 @@ Irei dedicar essa seção para falar de coisas que eu faria, ou gostaria de impl
 - Implementar testes automatizados de UI;
 
 - Caso esse projeto fosse deployado para uma cloud, eu implementaria um CD no workflow do GitHub Actions;
-
-- Utilizar alguma ferramenta para passar as variáveis de ambiente de um arquivo para o *docker-compose*.
