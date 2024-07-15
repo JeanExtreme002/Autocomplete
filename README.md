@@ -8,7 +8,7 @@ More information at [back-end](./back) and [front-end](./front) directories.
 ## Getting Started
 The entire project has been built to run entirely on [Docker](https://www.docker.com/). 
 
-Rename `.env.sample` to `.env` and execute the command below to run the application:
+Create a `.env` from `.env.sample` and execute the command below to run the application:
 ```
 docker-compose up
 ```
