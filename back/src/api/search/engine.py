@@ -98,6 +98,23 @@ class SearchEngine:
         """
         Insert a new term into the search engine.
         """
+        term = term.strip()
+
+        response = await self.client.search(
+            index=self.term_index_name,
+            body={
+                "query": {
+                    "match_phrase": {
+                        "term": term
+                    }
+                }
+            }
+        )
+
+        # Check if the term already exists.
+        if response["hits"]["total"]["value"] > 0:
+            return
+
         await self.client.index(
             index=self.term_index_name,
             document={"term": term},
