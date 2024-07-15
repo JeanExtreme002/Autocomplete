@@ -15,7 +15,7 @@ services:
       retries: 5
 
   backend:
-    image: python:3.9
+    image: python:3.10
     working_dir: /app
     volumes:
       - ./back:/app
@@ -23,11 +23,20 @@ services:
       - "5000:5000"
 
     command: >
-      sh -c 'pip install poetry && poetry install; if [ "$seed" = "true" ]; then
-                poetry run python -m src.seeder && poetry run python -m src;
-             else
-                poetry run python -m src;
-             fi'
+      sh -c 'pip install poetry && poetry install && (echo "Waiting for Elasticsearch to be ready..." &&
+
+        until curl -s http://elasticsearch:9200/_cluster/health | grep -q "\"status\":\"green\|yellow\""; do
+            echo "Elasticsearch not ready yet, waiting...";
+            sleep 5;
+        done) && 
+        
+        echo "Elasticsearch is ready!"; 
+        
+        if [ "$seed" = "true" ]; then
+            poetry run python -m src.seeder && poetry run python -m src;
+        else
+            poetry run python -m src;
+        fi'
     depends_on:
       - elasticsearch
     healthcheck:
