@@ -44,6 +44,8 @@ Entretando abandonei essa ideia, por dois motivos:
 
 - Caso haja novos termos no servidor, o usuário não os obteria, ficando limitado apenas ao seu cache.
 
+Outra estratégia que pensei para diminuir o custo de banda foi manter uma sessão aberta para o usuário, e fazê-lo enviar apenas novos caracteres. Isso certamente diminuiria a banda utilizada, já que eu não estou enviando o input inteiro ao servidor, porém ao custo de processamento e memória do servidor. Então definitivamente não é uma boa ideia também.
+
 Também pensei em, pelo menos, impedir o cliente de enviar requisições com inputs de tamanho menores que 4. Mas penso que, por se tratar de uma regra de negócio, isso deveria ficar apenas no back-end mesmo.
 
 ### Testes
