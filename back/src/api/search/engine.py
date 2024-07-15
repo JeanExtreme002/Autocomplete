@@ -42,6 +42,10 @@ class SearchEngine:
     async def close_connections(self):
         """
         Close all internal conections.
+
+        Explanation: Some operations of AsyncElasticsearch may leave their connections
+        still open. If the task ends without closing these connections, the "Unclosed
+        client session" error may occur.
         """
         await self.client.close()
 
@@ -84,8 +88,9 @@ class SearchEngine:
         response = await self.client.search(
             index=self.term_index_name,
             body={"query": {"match_all": {}}},
-            from_=offset, size=size,
-            timeout=self.operations_timeout
+            from_=offset,
+            size=size,
+            timeout=self.operations_timeout,
         )
         return [hits["_source"]["term"] for hits in response["hits"]["hits"]]
 
@@ -94,7 +99,7 @@ class SearchEngine:
         Insert a new term into the search engine.
         """
         await self.client.index(
-            index=self.term_index_name, 
+            index=self.term_index_name,
             document={"term": term},
             timeout=self.operations_timeout
         )
@@ -122,7 +127,7 @@ class SearchEngine:
                     }
                 }
             },
-            timeout=self.operations_timeout
+            timeout=self.operations_timeout,
         )
         suggestions = response["suggest"]["term_suggest"][0]["options"]
 
