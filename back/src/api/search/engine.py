@@ -1,6 +1,5 @@
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
-from typing import List
+from elasticsearch import AsyncElasticsearch
+from typing import List, Tuple
 import time
 import requests
 
@@ -19,8 +18,10 @@ class SearchEngine:
     def __init__(self, host: str, port: int, timeout: int = 60 * 5):
         self.base_url = f"http://{host}:{port}"
 
-        self.client = Elasticsearch(self.base_url)
+        self.client: AsyncElasticsearch = AsyncElasticsearch(self.base_url)
         self.client._verified_elasticsearch = True
+
+        self.operations_timeout = f"{Config.ELASTIC_SEARCH_CONFIG.TIMEOUT}s"
 
         # Wait for Elasticsearch to become available.
         start_time = time.time()
@@ -38,15 +39,31 @@ class SearchEngine:
         else:
             raise RuntimeError("Elasticsearch is not available within the timeout period.")
 
-        # Create index if it does not exist.
-        if not self.client.indices.exists(index=self.term_index_name):
-            self.__create_term_index()
+    async def close_connections(self):
+        """
+        Close all internal conections.
 
-    def __create_term_index(self) -> None:
+        Explanation: Some operations of AsyncElasticsearch may leave their connections
+        still open. If the task ends without closing these connections, the "Unclosed
+        client session" error may occur.
+        """
+        await self.client.close()
+
+    async def initialize(self):
+        """
+        Initialize indices.
+        """
+        exists = await self.client.indices.exists(index=self.term_index_name)
+
+        # Create index if it does not exist.
+        if not exists:
+            await self.__create_term_index()
+
+    async def __create_term_index(self) -> None:
         """
         Create a term index into the ElasticSearch.
         """
-        self.client.indices.create(
+        await self.client.indices.create(
             index=self.term_index_name,
             timeout="60s",
             body={
@@ -61,38 +78,46 @@ class SearchEngine:
             },
         )
 
-    def get_all_terms(self, page: int = 0) -> List[str]:
+    async def get_all_terms(self, page: int = 0) -> List[str]:
         """
         Get all terms from the search engine.
         """
         offset = page * 100
         size = 100
 
-        response = self.client.search(
-            index=self.term_index_name, body={"query": {"match_all": {}}}, from_=offset, size=size
+        response = await self.client.search(
+            index=self.term_index_name,
+            body={"query": {"match_all": {}}},
+            from_=offset,
+            size=size,
+            timeout=self.operations_timeout,
         )
         return [hits["_source"]["term"] for hits in response["hits"]["hits"]]
 
-    def insert_term(self, term: str) -> None:
+    async def insert_term(self, term: str) -> None:
         """
         Insert a new term into the search engine.
         """
-        self.client.index(index=self.term_index_name, document={"term": term})
+        await self.client.index(
+            index=self.term_index_name,
+            document={"term": term},
+            timeout=self.operations_timeout
+        )
 
-    def insert_terms(self, *terms: str) -> None:
+    async def insert_terms(self, *terms: Tuple[str]) -> None:
         """
         Insert multiple terms into the search engine.
         """
         index = self.term_index_name
 
         documents = [{"_index": index, "_source": {"term": term}} for term in terms]
-        bulk(self.client, documents, index=index, raise_on_error=True)
+        await self.client.bulk(documents, index=index, timeout=self.operations_timeout)
 
-    def search(self, text: str, max_results: int = 20) -> List[str]:
+    async def search(self, text: str, max_results: int = 20) -> List[str]:
         """
         Search for a term.
         """
-        response = self.client.search(
+        response = await self.client.search(
             index=self.term_index_name,
             body={
                 "suggest": {
@@ -102,17 +127,28 @@ class SearchEngine:
                     }
                 }
             },
+            timeout=self.operations_timeout,
         )
         suggestions = response["suggest"]["term_suggest"][0]["options"]
 
         return [suggestion["text"] for suggestion in suggestions]
 
 
-def get_search_engine() -> SearchEngine:
+search_engine_initialized = False
+
+
+async def get_search_engine() -> SearchEngine:
     """
     Return an instance of the SearchEngine.
     """
+    global search_engine_initialized
+
     search_engine = SearchEngine(
         host=Config.ELASTIC_SEARCH_CONFIG.HOST, port=Config.ELASTIC_SEARCH_CONFIG.PORT
     )
+
+    if not search_engine_initialized:
+        await search_engine.initialize()
+        search_engine_initialized = True
+
     return search_engine

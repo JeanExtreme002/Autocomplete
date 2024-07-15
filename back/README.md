@@ -24,7 +24,7 @@ $ poetry run python -m src.seeder
 ## Running Tests
 The back-end has some tests to check if everything is working properly. To run the tests, execute the command below:
 ```
-$ poetry run python -m unittest discover -s tests --verbose
+$ poetry run python -m unittest discover -s src.tests --verbose
 ```
 
 ## Coding Style

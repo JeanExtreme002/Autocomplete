@@ -1,10 +1,10 @@
 from fastapi.testclient import TestClient
-from unittest import TestCase
+from unittest import IsolatedAsyncioTestCase
 
 from src.api.app import get_app
 from src.api.search.engine import get_search_engine
 
-from mocked import get_mocked_search_engine
+from src.tests.mocked import get_mocked_search_engine
 
 app = get_app()
 client = TestClient(app)
@@ -12,7 +12,7 @@ client = TestClient(app)
 app.dependency_overrides[get_search_engine] = get_mocked_search_engine
 
 
-class FastAPITest(TestCase):
+class FastAPITest(IsolatedAsyncioTestCase):
 
     terms = [
         "direito do consumidor",
@@ -27,13 +27,13 @@ class FastAPITest(TestCase):
         response = client.get("/")
         self.assertEqual(response.status_code, 200)
 
-    def test_create_term(self):
+    async def test_create_term(self):
         """
         Test creating terms.
         """
         # There should be nothing in the search engine.
         search_engine = get_mocked_search_engine()
-        self.assertListEqual(search_engine.get_all_terms(), list())
+        self.assertListEqual(await search_engine.get_all_terms(), list())
 
         # Create terms.
         headers = {
@@ -48,7 +48,7 @@ class FastAPITest(TestCase):
 
         # Check if the terms were created successfully.
         search_engine = get_mocked_search_engine()
-        self.assertListEqual(search_engine.get_all_terms(), self.terms)
+        self.assertListEqual(await search_engine.get_all_terms(), self.terms)
 
     def test_get_all_terms(self):
         """

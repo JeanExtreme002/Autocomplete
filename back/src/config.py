@@ -12,6 +12,7 @@ class ElasticSearchConfig:
     HOST = os.getenv("ELASTICSEARCH_HOST", "elasticsearch")
     PORT = int(os.getenv("ELASTICSEARCH_PORT", "9200"))
     MAX_RESULTS = int(os.getenv("ELASTICSEARCH_MAX_RESULTS", "20"))
+    TIMEOUT = int(os.getenv("ELASTICSEARCH_TIMEOUT", "10"))
 
 
 class Config:
