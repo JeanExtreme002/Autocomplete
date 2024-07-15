@@ -44,8 +44,6 @@ services:
     ports:
       - "3000:3000"
     command: sh -c "npm install && npm start"
-    depends_on:
-      - backend
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:3000 || exit 1"]
       interval: 10s
