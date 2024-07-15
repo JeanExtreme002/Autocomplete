@@ -48,7 +48,7 @@ Estou utilizando o [`Flake8`](https://flake8.pycqa.org/) para verificar a estili
 Para o front-end, estou utilizando o [`ESLint`](https://eslint.org/) e o [`Prettier`](https://prettier.io/). Coloquei as suas chamadas no `package.json` do projeto.
 
 ### Integração Contínua
-Eu criei um *workflow* do GitHub Actions para o projeto, para realizar todos os testes existentes. Eu entendo que é sempre bom automatizar isso também, pois em algum momento, o desenvolvedor pode dar *push* das alterações sem fazer os testes locais antes, e alguma coisa acabar quebrando o sistema — como aconteceu comigo algumas vezes durante do desenvolvimento do projeto.
+Eu criei um *workflow* do GitHub Actions para o projeto, para realizar todos os testes existentes. Eu entendo que é sempre bom automatizar isso também, pois em algum momento, o desenvolvedor pode dar *push* das alterações sem fazer os testes locais antes, e alguma coisa acabar quebrando o sistema — como aconteceu comigo algumas vezes durante o desenvolvimento do projeto.
 
 Fiz um *workflow* para o back-end e um para o front-end.
 
