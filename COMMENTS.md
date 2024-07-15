@@ -56,7 +56,7 @@ Fiz um *workflow* para o back-end e um para o front-end.
 Tanto no back-end como no front-end, existe um módulo de configuração dentro de `src` para carregar as variáveis de ambiente — ou definir seus valores padrão caso não exista. A configuração padrão desses módulos já é suficiente para rodar o projeto localmente.
 
 ### Docker
-Todo o projeto, como foi pedido nos requisitos, é capaz de rodar no Docker, com apenas um único comando `docker-compose up`. O projeto inteiro é dividido em três serviços: `elasticsearch`, `backend` e `frontend`. O `frontend` e o `elasticsearch` pode ser executado separadamente dos demais, enquanto o `backend` depende do `elasticsearch` estar em execução e pronto para ser utilizado.
+Todo o projeto, como foi pedido nos requisitos, é capaz de rodar no Docker, com apenas um único comando `docker-compose up`. O projeto inteiro é dividido em três serviços: `elasticsearch`, `backend` e `frontend`. O `frontend` e o `elasticsearch` podem ser executados separadamente dos demais, enquanto o `backend` depende do `elasticsearch` estar em execução e pronto para ser utilizado.
 
 No comando do serviço `backend`, implementei um script para liberar a inicialização do servidor somente quando o motor de busca estiver pronto. Além disso, é possível também popular o motor de busca no *compose*, apenas definindo antes a variável de ambiente `seed=true` no seu sistema.
 
