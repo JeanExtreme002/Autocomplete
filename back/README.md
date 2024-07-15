@@ -1,9 +1,9 @@
 # Back-end
-This is the back-end server of the auto complete project.
+This is the back-end server of the auto complete project, built with [FastAPI](https://fastapi.tiangolo.com/) and [Elasticsearch](https://elasticsearch-py.readthedocs.io/en/v8.14.0/).
 
 ## Getting Started
 
-First, make sure Elasticsearch is running and `.env` file is configured. 
+First, make sure Elasticsearch is running — run it with `docker-compose up elasticsearch` — and `.env` file is configured.
 
 Install the dependencies for the project:
 ```
