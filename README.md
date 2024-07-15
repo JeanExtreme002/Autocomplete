@@ -1,7 +1,7 @@
 # AutoComplete
 This project implements an website with an autocomplete box using GraphQL and Elasticsearch.
 
-More information at [back-end](./back-end) and [front-end](./front-end) directories.
+More information at [back-end](./back) and [front-end](./front) directories.
 
 **Author:** Jean Loui Bernard Silva de Jesus
 
