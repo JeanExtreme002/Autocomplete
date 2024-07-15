@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 
 __all__ = [
@@ -16,13 +16,19 @@ class MockedSearchEngine:
         self.base_url = "mocked_url"
         self.term_index_name = "mocked_index"
 
-    def insert_term(self, term: str) -> None:
+    async def close_connections(self) -> None:
+        pass
+
+    async def insert_term(self, term: str) -> None:
         self.__terms.append(term)
 
-    def get_all_terms(self, page: int = 0) -> List[str]:
+    async def insert_terms(self, *term: Tuple[str]) -> None:
+        self.__terms.append(term)
+
+    async def get_all_terms(self, page: int = 0) -> List[str]:
         return self.__terms[100 * page : 100 * page + 100]
 
-    def search(self, text: str, max_results: int = 20) -> List[str]:
+    async def search(self, text: str, max_results: int = 20) -> List[str]:
         results = []
 
         for term in self.__terms:

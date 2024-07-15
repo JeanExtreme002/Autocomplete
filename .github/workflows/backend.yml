@@ -51,7 +51,7 @@ jobs:
         working-directory: ./back
 
       - name: Run Unit Tests
-        run: poetry run python -m unittest discover -s tests --verbose
+        run: poetry run python -m unittest discover -s src.tests --verbose
         working-directory: ./back
 
       - name: Run Linter
