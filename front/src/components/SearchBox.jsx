@@ -6,7 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import {getSuggestions} from '../services/suggestions';
 import './SearchBox.css';
 
-const ListboxComponent = React.forwardRef((props, ref) => {
+let ListboxComponent = (props, ref) => {
     const {children, ...other} = props;
 
     delete other.className;
@@ -16,7 +16,8 @@ const ListboxComponent = React.forwardRef((props, ref) => {
             {children}
         </ul>
     );
-});
+};
+ListboxComponent = React.forwardRef(ListboxComponent);
 
 export default function SearchBox() {
     const [options, setOptions] = React.useState([]);
@@ -34,7 +35,7 @@ export default function SearchBox() {
         getSuggestions(inputValue, controller.signal).then((results) => setOptions(results));
     };
 
-    const onInputChange = (event, value, reason) => {
+    const onInputChange = (event, value) => {
         value ? getData(value) : setOptions([]);
     };
 
