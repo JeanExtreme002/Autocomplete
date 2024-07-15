@@ -1,5 +1,6 @@
 from elasticsearch import AsyncElasticsearch
 from typing import List, Tuple
+import logging
 import time
 import requests
 
@@ -113,7 +114,7 @@ class SearchEngine:
 
         # Check if the term already exists.
         if response["hits"]["total"]["value"] > 0:
-            return
+            return logging.info("Term already exists in the search engine.")
 
         await self.client.index(
             index=self.term_index_name,
