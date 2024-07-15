@@ -1,0 +1,30 @@
+name: Front-end CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Set up NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          
+      - name: Install Dependencies
+        run: npm install
+        working-directory: ./front
+        
+      - name: Run Linter
+        run: npm run lint
+        working-directory: ./front
