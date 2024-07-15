@@ -2,27 +2,23 @@
 Meus comentários a respeito do desenvolvimento projeto.
 
 ### Algoritmo de Busca por Texto
-Buscar texto em um grande volume de dados pode ser bastante custoso se utilizado algoritmos com alta complexidade. Para tal, penso
-em utilizar o ElasticSearch que é um motor de busca bastante eficiente e open-source, e implementa o famoso *reverse indexing* que otimiza a busca por texto. 
+Buscar texto em um grande volume de dados pode ser bastante custoso se utilizado algoritmos com alta complexidade. Para tal, penso em utilizar o ElasticSearch que é um motor de busca bastante eficiente e open-source, e implementa o famoso *reverse indexing* que otimiza a busca por texto. 
 
 Segundo minhas pesquisas, a complexidade da busca deve ser `O(1)` no caso médio, mas alguns usuários relataram o contrário — dadas algumas circunstâncias — e eu ainda não encontrei na documentação oficial a sua complexidade. Pelo menos, a sua complexidade certamente é `O(log(n))`, o que já é melhor do que utilizar um algoritmo de busca por padrão, no qual o menor custo é `O(n)`.
 
 ### Persistência dos Dados
-Como a única informação que eu pretendo persistir e recuperar é um único texto por linha, não faz sentido ao meu ver, para este projeto,
-a utilização de um banco de dados. Sendo assim, irei apenas criar um arquivo JSON para seeding, e uma rota na API para adicionar novos textos.
+Como a única informação que eu pretendo persistir e recuperar é um único texto por linha, não faz sentido ao meu ver, para este projeto, a utilização de um banco de dados. Sendo assim, irei apenas criar um arquivo JSON para seeding, e uma rota na API para adicionar novos textos.
 
 É possível popular a aplicação através do pacote `seeder` no back-end.
 
 ### Back-end (API)
-Para o back-end, eu resolvi utilizar FastAPI. Nenhum motivo especial. Apenas por ser uma ótima ferramenta para desenvolvimento de
-servidores API, por eu ter uma certa familiaridade com ele e ser mais simples e comum para o propósito.
+Para o back-end, eu resolvi utilizar FastAPI. Nenhum motivo especial. Apenas por ser uma ótima ferramenta para desenvolvimento de servidores API, por eu ter uma certa familiaridade com ele e ser mais simples e comum para o propósito.
 
 Bem no início do projeto, eu havia implementado uma "mini" arquitetura MVC para a API — utilizando Pydantic para tratar as entradas das rotas — porém modifiquei a estrutura do projeto após eu aprender sobre o GraphQL. Inclusive, devo dizer que ficou até mais enxuto o código.
 
 Para me comunicar com o motor de busca, estou utilizando a biblioteca [`elasticsearch`](https://elasticsearch-py.readthedocs.io/), e para o GraphQL estou usando a biblioteca [`strawberry`](https://strawberry.rocks/), para tornar mais fácil o desenvolvimento do back-end em Python pois, além do mesmo já implementar um servidor GraphQL, ele ainda conta com suporte para o FastAPI.
 
-Além disso, durante o desenvolvimento, eu criava uma instância do Elasticsearch fora do servidor, para ser utilizado nas rotas do GraphQL. Depois, eu descobri sobre o `context_getter` do `strawberry`, e passei a utilizar o Elasticsearch como uma dependência, tal como
-é feito com instâncias de banco de dados. Isso facilitou inclusive o desenvolvimento dos testes, para mockar o Elasticsearch na API.
+Além disso, durante o desenvolvimento, eu criava uma instância do Elasticsearch fora do servidor, para ser utilizado nas rotas do GraphQL. Depois, eu descobri sobre o `context_getter` do `strawberry`, e passei a utilizar o Elasticsearch como uma dependência, tal como é feito com instâncias de banco de dados. Isso facilitou inclusive o desenvolvimento dos testes, para mockar o Elasticsearch na API.
 
 Também estou utilizando o pacote [`fastapi-cache2`](https://pypi.org/project/fastapi-cache2/) para cachear os resultados da API, a fim de otimizar as requisições.
 
@@ -33,8 +29,7 @@ Desde o início do projeto, eu já estava em mente de utilizar o Elasticsearch d
 ### Front-end
 Para o front-end, tal como é pedido nos requisitos do projeto, utilizei React.js.
 
-Para fins de simplificade e também devido à minha falta de habilidade em design, optei por utilizar os componentes do [Material UI](https://mui.com/) para criar a página do front. A caixa de pesquisa foi feita utilizando o `Autocomplete`, que além de ter um visual
-bastante agradável, traz consigo vários recursos.
+Para fins de simplificade e também devido à minha falta de habilidade em design, optei por utilizar os componentes do [Material UI](https://mui.com/) para criar a página do front. A caixa de pesquisa foi feita utilizando o `Autocomplete`, que além de ter um visual bastante agradável, traz consigo vários recursos.
 
 Separei os elementos visuais no pacote `components` e as funcionalidades no pacote `services`.
 
@@ -43,10 +38,9 @@ Devido à minha falta de experiência em desenvolvimento front-end, a minha maio
 ### Testes
 Implementei no back-end testes — utilizando unittest — para verificar o funcionamento do Elasticsearch e das rotas do GraphQL.
 
-Pesquisei por um mock do Elasticsearch, porém o melhor pacote que eu encontrei foi o [`ElasticMock`](https://pypi.org/project/ElasticMock/), que apresentava erros devido à incompatibilidade da minha versão do Elasticsearch. Além disso, olhando as suas issues, fiquei um pouco com um pé atrás pois seria uma depêndencia no projeto sem muito suporte, e eu não teria tanto controle quanto ao seu funcionamento. Então, para o teste do motor de busca, decidi criar um *index* de teste somente para testes, que é sempre resetado
-no início e no final do teste.
+Pesquisei por um mock do Elasticsearch, porém o melhor pacote que eu encontrei foi o [`ElasticMock`](https://pypi.org/project/ElasticMock/), que apresentava erros devido à incompatibilidade da minha versão do Elasticsearch. Além disso, olhando as suas issues, fiquei um pouco com um pé atrás pois seria uma depêndencia no projeto sem muito suporte, e eu não teria tanto controle quanto ao seu funcionamento. Então, para o teste do motor de busca, decidi criar um *index* de teste somente para testes, que é sempre resetado no início e no final do teste.
 
-Para o teste das rotas do GraphQL, eu entendo que é uma boa prática um teste não depender do outro. Sendo assim, crie um mock da minha classe `SearchEngine` — está no módulo `mocked.py` — para ser utilizado nas rotas do servidor. Realizei essa alteração no `app.dependency_overrides`. Também estou utilizando o `TestClient` do FastAPI para testar as rotas sem precisar inicializar o servidor de fato.
+Para o teste das rotas do GraphQL, eu entendo que é uma boa prática um teste não depender do outro. Sendo assim, criei um mock da minha classe `SearchEngine` — está no módulo `mocked.py` — para ser utilizado nas rotas do servidor. Realizei essa alteração no `app.dependency_overrides`. Também estou utilizando o `TestClient` do FastAPI para testar as rotas sem precisar inicializar o servidor de fato.
 
 ### Formatação de Código
 Estou utilizando o [`Flake8`](https://flake8.pycqa.org/) para o verificar a estilização do back-end e o [`Black`](https://pypi.org/project/black/) para formatar. O `black` em alguns poucos momentos é meio chatinho e acaba formatando alguns trechos de uma maneira que não me agrada muito — como colocar toda estrutura de um dicionário em uma única linha, quando eu queria a estrutura indentada para melhor visibilidade — mas no geral é um ótimo formatador de código.
